@@ -1,5 +1,6 @@
 package com.tejas_bharadwaj.picklerick;
 
+import android.media.MediaPlayer;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,6 +17,7 @@ public class MainActivity extends AppCompatActivity {
 
     private RelativeLayout mainLayout;
     private Button pickleRickBtn;
+    private MediaPlayer picklePlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -23,6 +25,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
         pickleRickBtn = (Button) findViewById(R.id.pickle_rick_button);
+        picklePlayer = MediaPlayer.create(MainActivity.this, R.raw.pickle_rick_audio);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         final int width = displayMetrics.widthPixels;
@@ -51,7 +54,14 @@ public class MainActivity extends AppCompatActivity {
                         .resize(0, height)
                         .into(pickleViewThree);
                 mainLayout.addView(pickleViewThree);
+                picklePlayer.start();
             }
         });
+    }
+
+    @Override
+    protected void onDestroy() {
+        picklePlayer.stop();
+        super.onDestroy();
     }
 }
