@@ -18,6 +18,7 @@ public class MainActivity extends AppCompatActivity {
     private RelativeLayout mainLayout;
     private Button pickleRickBtn;
     private MediaPlayer picklePlayer;
+    private MediaPlayer rickPlayer;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,6 +27,7 @@ public class MainActivity extends AppCompatActivity {
         mainLayout = (RelativeLayout) findViewById(R.id.main_layout);
         pickleRickBtn = (Button) findViewById(R.id.pickle_rick_button);
         picklePlayer = MediaPlayer.create(MainActivity.this, R.raw.pickle_rick_audio);
+        rickPlayer = MediaPlayer.create(MainActivity.this, R.raw.rick_sound_effect);
         DisplayMetrics displayMetrics = new DisplayMetrics();
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         final int width = displayMetrics.widthPixels;
@@ -40,13 +42,14 @@ public class MainActivity extends AppCompatActivity {
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .into(pickleViewOne);
                 mainLayout.addView(pickleViewOne);
-                ImageView pickleViewTwo = new ImageView(MainActivity.this);
+                // EDGY CODE BELOW
+                /*ImageView pickleViewTwo = new ImageView(MainActivity.this);
                 Picasso.with(MainActivity.this).load(R.drawable.pickle_rick_2)
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
                         .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
                         .resize(width, 0)
                         .into(pickleViewTwo);
-                mainLayout.addView(pickleViewTwo);
+                mainLayout.addView(pickleViewTwo);*/
                 ImageView pickleViewThree = new ImageView(MainActivity.this);
                 Picasso.with(MainActivity.this).load(R.drawable.pickle_rick_3)
                         .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
@@ -54,6 +57,27 @@ public class MainActivity extends AppCompatActivity {
                         .resize(0, height)
                         .into(pickleViewThree);
                 mainLayout.addView(pickleViewThree);
+                // EDGY CODE BELOW
+                /*ImageView pickleViewFour = new ImageView(MainActivity.this);
+                Picasso.with(MainActivity.this).load(R.drawable.pickle_rick_4)
+                        .networkPolicy(NetworkPolicy.NO_CACHE, NetworkPolicy.NO_STORE)
+                        .memoryPolicy(MemoryPolicy.NO_CACHE, MemoryPolicy.NO_STORE)
+                        .resize(width, 0)
+                        .centerCrop()
+                        .into(pickleViewFour);
+                mainLayout.addView(pickleViewFour);*/
+                picklePlayer.start();
+            }
+        });
+        picklePlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
+                rickPlayer.start();
+            }
+        });
+        rickPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
+            @Override
+            public void onCompletion(MediaPlayer mediaPlayer) {
                 picklePlayer.start();
             }
         });
@@ -62,6 +86,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onDestroy() {
         picklePlayer.stop();
+        rickPlayer.stop();
         super.onDestroy();
     }
 }
